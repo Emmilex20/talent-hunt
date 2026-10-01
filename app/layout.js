@@ -1,6 +1,7 @@
 import "./globals.css";
 import "./humanize.css";
 import "./application-security.css";
+import "./accessibility.css";
 import SiteChrome from "@/components/SiteChrome";
 import{ToastProvider}from"@/components/ToastProvider";
 
@@ -18,19 +19,8 @@ export const metadata={
  category:"entertainment",
  formatDetection:{email:false,address:false,telephone:false},
  alternates:{canonical:"/"},
- openGraph:{
-  type:"website",
-  locale:"en_NG",
-  url:"/",
-  siteName:"TalentQuest",
-  title:"TalentQuest | Discover. Vote. Raise Stars.",
-  description:"Discover rising talent, follow the competition and support your favourite contestants on TalentQuest."
- },
- twitter:{
-  card:"summary_large_image",
-  title:"TalentQuest | Discover. Vote. Raise Stars.",
-  description:"Discover rising talent, follow the competition and support your favourite contestants on TalentQuest."
- },
+ openGraph:{type:"website",locale:"en_NG",url:"/",siteName:"TalentQuest",title:"TalentQuest | Discover. Vote. Raise Stars.",description:"Discover rising talent, follow the competition and support your favourite contestants on TalentQuest."},
+ twitter:{card:"summary_large_image",title:"TalentQuest | Discover. Vote. Raise Stars.",description:"Discover rising talent, follow the competition and support your favourite contestants on TalentQuest."},
  robots:{index:true,follow:true,googleBot:{index:true,follow:true,"max-image-preview":"large","max-snippet":-1,"max-video-preview":-1}},
  icons:{icon:[{url:"/icon.svg",type:"image/svg+xml"}],shortcut:"/icon.svg",apple:"/apple-icon.svg"}
 };
