@@ -2,6 +2,7 @@
 import Link from "next/link";
 import {useEffect,useState,use} from "react";
 import {getSupabase} from "@/lib/supabase";
+import "./profile.css";
 
 export default function ContestantProfile({params}){
   const {id}=use(params);
