@@ -4,6 +4,7 @@ out
 .env
 .env.local
 .env.production
+.env.e2e.local
 .vercel
 .DS_Store
 npm-debug.log*
