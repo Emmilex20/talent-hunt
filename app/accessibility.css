@@ -5,6 +5,9 @@
 :where(button):not(:disabled){cursor:pointer}
 :where(button:disabled,[aria-disabled="true"]){cursor:not-allowed}
 ::selection{background:#d9aa39;color:#08090d}
+.skipLink{position:fixed;z-index:100000;top:10px;left:12px;padding:12px 16px;border-radius:8px;background:#f0c75f;color:#08090d;font-size:12px;font-weight:900;transform:translateY(-160%);transition:transform .15s;text-decoration:none}.skipLink:focus{transform:translateY(0)}
+.navLinks a[aria-current="page"]{color:#efc75e}.navLinks a[aria-current="page"]:not(.navVote){text-decoration:underline;text-decoration-color:#8c6c28;text-underline-offset:7px}
+#main-content:focus{outline:none;box-shadow:none}
 @media(pointer:coarse){:where(button,a,input,select){min-height:44px}.menuButton{min-width:44px;min-height:44px}.navVote{display:inline-flex;align-items:center}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.buttonGold:hover,.talentCard:hover,.contestantCard:hover{transform:none!important}}
 @media(forced-colors:active){:where(a,button,input,select,textarea):focus-visible{outline:3px solid Highlight!important}.buttonGold,.systemPrimary{border:1px solid ButtonText}.contestantCard,.applicationForm,.systemCard{border:1px solid CanvasText}}
