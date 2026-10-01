@@ -1,0 +1,10 @@
+/* Production accessibility layer */
+:where(a,button,input,select,textarea,[role="button"],[tabindex]):focus-visible{outline:3px solid #f0c75f;outline-offset:3px;box-shadow:0 0 0 5px rgba(8,9,13,.78)}
+:where(button,input,select,textarea){font:inherit}
+:where(button,[role="button"]){touch-action:manipulation}
+:where(button):not(:disabled){cursor:pointer}
+:where(button:disabled,[aria-disabled="true"]){cursor:not-allowed}
+::selection{background:#d9aa39;color:#08090d}
+@media(pointer:coarse){:where(button,a,input,select){min-height:44px}.menuButton{min-width:44px;min-height:44px}.navVote{display:inline-flex;align-items:center}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.buttonGold:hover,.talentCard:hover,.contestantCard:hover{transform:none!important}}
+@media(forced-colors:active){:where(a,button,input,select,textarea):focus-visible{outline:3px solid Highlight!important}.buttonGold,.systemPrimary{border:1px solid ButtonText}.contestantCard,.applicationForm,.systemCard{border:1px solid CanvasText}}
