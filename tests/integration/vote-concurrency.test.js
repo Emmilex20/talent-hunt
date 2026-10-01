@@ -1,13 +1,17 @@
 const test=require('node:test');
 const assert=require('node:assert/strict');
+const path=require('node:path');
+const {loadEnvConfig}=require('@next/env');
 const {createClient}=require('@supabase/supabase-js');
+
+// Load .env.local exactly as Next.js does. Secrets remain local and are never printed.
+loadEnvConfig(path.resolve(__dirname,'../..'));
 
 const url=process.env.NEXT_PUBLIC_SUPABASE_URL;
 const serviceKey=process.env.SUPABASE_SERVICE_ROLE_KEY;
 const enabled=process.env.RUN_DB_INTEGRATION==='1';
 
 async function loadCredit(){return (await import('../../lib/credit-vote-order.js')).creditVoteOrder}
-
 function admin(){return createClient(url,serviceKey,{auth:{persistSession:false,autoRefreshToken:false}})}
 
 test('concurrent callback and webhook attempts create exactly one vote ledger entry',{skip:!enabled||!url||!serviceKey},async()=>{
