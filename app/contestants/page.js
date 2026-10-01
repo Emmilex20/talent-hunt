@@ -1,0 +1,4 @@
+import Link from "next/link";
+const categories=["Singing","Dance","Comedy","Acting","Spoken Word","Instrumental"];
+export const metadata={title:"Contestants"};
+export default function ContestantsPage(){return <section className="listingPage"><div className="container"><div className="listingHero"><span className="kicker">MEET THE TALENT</span><h1>Contestants</h1><p>Approved contestants will appear here as the TalentQuest season gets underway.</p></div><div className="categoryPills">{categories.map(x=><span key={x}>{x}</span>)}</div><div className="emptyState"><div>★</div><h2>The stage is being prepared.</h2><p>Applications are currently being collected and reviewed. Check back soon to meet this season&apos;s contestants.</p><Link href="/apply" className="button buttonGold">Apply for TalentQuest →</Link></div></div></section>}

@@ -1,0 +1,1 @@
+insert into public.competition_rounds(name,slug,round_order,status,public_vote_weight,judge_weight) values ('Auditions','auditions',1,'draft',0,100),('Top 50','top-50',2,'draft',60,40),('Top 20','top-20',3,'draft',60,40),('Semi Final','semi-final',4,'draft',70,30),('Grand Finale','grand-finale',5,'draft',70,30) on conflict(slug) do nothing;
