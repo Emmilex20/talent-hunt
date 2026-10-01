@@ -1,11 +1,14 @@
 "use client";
 import Link from "next/link";
-import {useEffect,useState} from "react";
+import {Suspense,useEffect,useState} from "react";
 import {useSearchParams} from "next/navigation";
 import "../vote.css";
 
 const PENDING_KEY="talentquest_pending_vote";
-export default function VerifyVote(){
+
+function VerificationLoading(){return <main className="verifyPage"><div className="verifyGlow"/><div className="verifyShell"><section className="verifyCard"><div className="verifyIcon loading">★</div><span className="verifyEyebrow">SECURE VERIFICATION</span><h1>Preparing verification</h1><p className="verifyLead">Please keep this page open while TalentQuest prepares to confirm your payment.</p><div className="verifyProgress"><i/></div></section></div></main>}
+
+function VerifyVoteContent(){
  const q=useSearchParams();
  const queryReference=q.get("reference")||q.get("trxref");
  const[reference,setReference]=useState(queryReference||"");
@@ -18,3 +21,5 @@ export default function VerifyVote(){
   <section className="verifyCard successCard"><div className="verifyIcon success">✓</div><span className="verifyEyebrow">VOTE CONFIRMED</span><h1>Thank you for<br/><em>your support.</em></h1><p className="verifyLead">Your payment was verified successfully and your votes have been added to the contestant.</p><div className="voteCredited"><span>VOTES CREDITED</span><strong>{state.data.votes}</strong><small>{state.data.votes===1?"verified vote":"verified votes"}</small></div><div className="verifyReference"><span>TRANSACTION REFERENCE</span><strong>{reference}</strong><b>✓ Verified</b></div><div className="verifyActions"><Link href={`/contestants/${state.data.contestantId}`} className="verifyPrimary">View contestant <span>→</span></Link><Link href="/vote" className="verifySecondary">Keep voting</Link></div><p className="verifyFoot">TalentQuest • Secure voting • Payment verified</p></section>}
  </div></main>
 }
+
+export default function VerifyVote(){return <Suspense fallback={<VerificationLoading/>}><VerifyVoteContent/></Suspense>}
