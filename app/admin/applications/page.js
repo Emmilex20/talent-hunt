@@ -1,0 +1,10 @@
+import Link from "next/link";
+const rows=[
+ ["TQ-0248","Amara Okafor","Singing","Abuja","Pending","01 Oct 2026"],
+ ["TQ-0247","David Eze","Dance","Lagos","Shortlisted","01 Oct 2026"],
+ ["TQ-0246","Zainab Musa","Spoken Word","Kaduna","Pending","30 Sep 2026"],
+ ["TQ-0245","Tobi Adeyemi","Comedy","Ibadan","Approved","30 Sep 2026"],
+ ["TQ-0244","Chiamaka Obi","Acting","Enugu","Pending","29 Sep 2026"],
+ ["TQ-0243","Samuel James","Instrumental","Jos","Rejected","29 Sep 2026"]
+];
+export default function Applications(){return <div className="adminPage"><div className="adminPageTop"><div><Link href="/admin" className="backLink">← Dashboard</Link><span className="kicker">TALENT MANAGEMENT</span><h1>Applications</h1><p>Review auditions, shortlist promising talent and approve contestants.</p></div><button className="button buttonGold">Export applications</button></div><div className="filterBar"><input placeholder="Search applicant, ID or location..."/><select defaultValue="all"><option value="all">All categories</option><option>Singing</option><option>Dance</option><option>Comedy</option><option>Acting</option><option>Spoken Word</option><option>Instrumental</option></select><select defaultValue="pending"><option value="pending">Pending review</option><option>Shortlisted</option><option>Approved</option><option>Rejected</option></select></div><section className="adminPanel"><div className="adminTable applicationsTable"><div className="tableRow tableHeader"><span>ID</span><span>Applicant</span><span>Category</span><span>Location</span><span>Status</span><span>Submitted</span><span>Action</span></div>{rows.map(r=><div className="tableRow" key={r[0]}><span className="muted">{r[0]}</span><span className="applicant"><i>{r[1].split(" ").map(x=>x[0]).join("")}</i><b>{r[1]}</b></span><span>{r[2]}</span><span>{r[3]}</span><span><em className={`status ${r[4].toLowerCase()}`}>{r[4]}</em></span><span className="muted">{r[5]}</span><span><button className="reviewBtn">Review →</button></span></div>)}</div></section><p className="adminNote">Live records will populate from Supabase after your project credentials and schema are configured.</p></div>}
