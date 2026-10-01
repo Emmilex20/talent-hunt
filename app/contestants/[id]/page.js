@@ -6,8 +6,21 @@ import "./profile.css";
 
 export default function ContestantProfile({params}){
   const {id}=use(params);
-  const [c,setC]=useState(null),[loading,setLoading]=useState(true);
-  useEffect(()=>{(async()=>{const s=getSupabase();if(!s){setLoading(false);return}const {data}=await s.from("contestants").select("*").eq("id",id).eq("active",true).maybeSingle();setC(data);setLoading(false)})()},[id]);
+  const [c,setC]=useState(null),[liveRound,setLiveRound]=useState(null),[loading,setLoading]=useState(true);
+  useEffect(()=>{(async()=>{
+    const s=getSupabase();if(!s){setLoading(false);return}
+    const {data:contestant}=await s.from("contestants").select("*").eq("id",id).eq("active",true).maybeSingle();
+    setC(contestant||null);
+    if(contestant){
+      const {data:memberships}=await s.from("round_contestants").select("round_id").eq("contestant_id",id).eq("active",true);
+      const roundIds=(memberships||[]).map(x=>x.round_id);
+      if(roundIds.length){
+        const {data:rounds}=await s.from("competition_rounds").select("*").in("id",roundIds).eq("status","live").eq("voting_enabled",true).order("created_at",{ascending:false}).limit(1);
+        setLiveRound(rounds?.[0]||null);
+      }
+    }
+    setLoading(false);
+  })()},[id]);
   if(loading)return <section className="profilePage"><div className="container profileLoading">Loading contestant…</div></section>;
   if(!c)return <section className="profilePage"><div className="container emptyState"><h2>Contestant not found</h2><Link href="/contestants">← All contestants</Link></div></section>;
   const name=c.stage_name||c.full_name;
@@ -36,8 +49,8 @@ export default function ContestantProfile({params}){
         </div>
       </section>
       <section className="profileVote">
-        <div><span className="kicker">PUBLIC VOTING</span><h2>Support your favourite <em>talent.</em></h2><p>Voting will open when the official competition round begins. Every verified vote will count toward the contestant's journey.</p></div>
-        <div className="voteComing"><span>★</span><div><small>VOTING STATUS</small><strong>Opening soon</strong></div></div>
+        <div><span className="kicker">PUBLIC VOTING</span><h2>{liveRound?<>Support your favourite <em>talent.</em></>:<>Support your favourite <em>talent.</em></>}</h2><p>{liveRound?`${liveRound.name} voting is live. Every verified vote counts toward this contestant's journey.`:"Voting will open when this contestant enters an official live competition round."}</p></div>
+        {liveRound?<Link className="voteComing" href={`/vote/${c.id}?round=${liveRound.id}`}><span>★</span><div><small>VOTING STATUS</small><strong>Vote now →</strong></div></Link>:<div className="voteComing"><span>★</span><div><small>VOTING STATUS</small><strong>Opening soon</strong></div></div>}
       </section>
     </div>
   </main>
