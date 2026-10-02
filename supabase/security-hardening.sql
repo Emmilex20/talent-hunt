@@ -2,6 +2,11 @@
 -- Run once in Supabase SQL Editor after the existing schema/migrations.
 -- This migration is intentionally additive and keeps the current competition rounds/data.
 
+-- Portal profile fields. Applications already contain these social fields, but
+-- the original contestants table did not. Add them before applying column grants.
+alter table public.contestants add column if not exists instagram text;
+alter table public.contestants add column if not exists tiktok text;
+
 -- Paid voting must always have a positive price and bounded quantities/amounts.
 alter table public.competition_rounds drop constraint if exists competition_rounds_vote_price_kobo_check;
 alter table public.competition_rounds add constraint competition_rounds_vote_price_kobo_check check (vote_price_kobo > 0);
