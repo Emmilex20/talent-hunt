@@ -1,4 +1,10 @@
 const { defineConfig, devices } = require('@playwright/test');
+const path = require('node:path');
+const { loadEnvConfig } = require('@next/env');
+
+// Playwright runs outside Next.js, so explicitly load .env.local before
+// reading E2E/Supabase variables. This keeps secrets local and out of source.
+loadEnvConfig(path.resolve(__dirname));
 
 const baseURL = process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:3000';
 
