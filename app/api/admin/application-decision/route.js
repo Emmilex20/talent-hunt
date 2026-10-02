@@ -31,14 +31,22 @@ export async function POST(request) {
       const { data: existing, error: existingError } = await db.from("contestants").select("*").eq("application_id", applicationId).maybeSingle();
       if (existingError) throw existingError;
       if (existing) {
-        contestant = existing;
+        // Repair ownership on older approved records if the application later became linked to an account.
+        if (application.user_id && existing.user_id !== application.user_id) {
+          const { data: repaired, error: repairError } = await db.from("contestants").update({ user_id: application.user_id }).eq("id", existing.id).select("*").single();
+          if (repairError) throw repairError;
+          contestant = repaired;
+        } else contestant = existing;
       } else {
         const contestantPayload = {
           application_id: applicationId,
+          user_id: application.user_id || null,
           full_name: application.full_name,
           stage_name: application.stage_name,
           category: application.category,
           bio: application.bio,
+          instagram: application.instagram || null,
+          tiktok: application.tiktok || null,
           photo_url: application.photo_url || null,
           video_url: application.video_url,
           active: true
