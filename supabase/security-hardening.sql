@@ -7,6 +7,15 @@
 alter table public.contestants add column if not exists instagram text;
 alter table public.contestants add column if not exists tiktok text;
 
+-- One application can create at most one contestant and one authenticated user
+-- can own at most one contestant/application record in the current portal model.
+create unique index if not exists contestants_application_id_unique
+on public.contestants(application_id) where application_id is not null;
+create unique index if not exists contestants_user_id_unique
+on public.contestants(user_id) where user_id is not null;
+create unique index if not exists applications_user_id_unique
+on public.applications(user_id) where user_id is not null;
+
 -- Paid voting must always have a positive price and bounded quantities/amounts.
 alter table public.competition_rounds drop constraint if exists competition_rounds_vote_price_kobo_check;
 alter table public.competition_rounds add constraint competition_rounds_vote_price_kobo_check check (vote_price_kobo > 0);
