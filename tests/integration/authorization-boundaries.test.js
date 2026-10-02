@@ -1,6 +1,10 @@
-import test from 'node:test';
-import assert from 'node:assert/strict';
-import { createClient } from '@supabase/supabase-js';
+const test=require('node:test');
+const assert=require('node:assert/strict');
+const path=require('node:path');
+const {loadEnvConfig}=require('@next/env');
+const {createClient}=require('@supabase/supabase-js');
+
+loadEnvConfig(path.resolve(__dirname,'../..'));
 
 const enabled=process.env.RUN_DB_INTEGRATION==='1';
 const url=process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -18,7 +22,7 @@ function clients(){
 }
 
 async function session(){
-  assert.ok(email&&password,'Set E2E_CONTESTANT_EMAIL and E2E_CONTESTANT_PASSWORD for authorization integration tests.');
+  assert.ok(email&&password,'Set E2E contestant credentials in .env.local for authorization integration tests.');
   const {user}=clients();
   const {data,error}=await user.auth.signInWithPassword({email,password});
   assert.ifError(error);
@@ -45,7 +49,7 @@ test('contestant cannot edit another contestant',{skip:!enabled},async()=>{
   const {admin}=clients();
   const {data:other,error:findError}=await admin.from('contestants').select('id,stage_name').neq('user_id',user.id).limit(1).maybeSingle();
   assert.ifError(findError);
-  if(!other)return; // Empty development databases may only contain the test contestant.
+  if(!other)return;
   const marker=`unauthorized-${Date.now()}`;
   const {data,error}=await client.from('contestants').update({stage_name:marker}).eq('id',other.id).select('id,stage_name');
   if(error) assert.match(error.message,/row-level security|permission|privilege|denied/i);
