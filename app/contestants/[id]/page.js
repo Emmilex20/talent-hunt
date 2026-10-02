@@ -2,6 +2,7 @@
 import Link from "next/link";
 import {useEffect,useState,use} from "react";
 import {getSupabase} from "@/lib/supabase";
+import BrandLoader from "@/components/BrandLoader";
 import "./profile.css";
 
 export default function ContestantProfile({params}){
@@ -21,7 +22,7 @@ export default function ContestantProfile({params}){
     }
     setLoading(false);
   })()},[id]);
-  if(loading)return <section className="profilePage"><div className="container profileLoading">Loading contestant…</div></section>;
+  if(loading)return <main className="tqLoadingPage"><BrandLoader label="Preparing contestant profile" /></main>;
   if(!c)return <section className="profilePage"><div className="container emptyState"><h2>Contestant not found</h2><Link href="/contestants">← All contestants</Link></div></section>;
   const name=c.stage_name||c.full_name;
   return <main className="profilePage">
@@ -49,7 +50,7 @@ export default function ContestantProfile({params}){
         </div>
       </section>
       <section className="profileVote">
-        <div><span className="kicker">PUBLIC VOTING</span><h2>{liveRound?<>Support your favourite <em>talent.</em></>:<>Support your favourite <em>talent.</em></>}</h2><p>{liveRound?`${liveRound.name} voting is live. Every verified vote counts toward this contestant's journey.`:"Voting will open when this contestant enters an official live competition round."}</p></div>
+        <div><span className="kicker">PUBLIC VOTING</span><h2>Support your favourite <em>talent.</em></h2><p>{liveRound?`${liveRound.name} voting is live. Every verified vote counts toward this contestant's journey.`:"Voting will open when this contestant enters an official live competition round."}</p></div>
         {liveRound?<Link className="voteComing" href={`/vote/${c.id}?round=${liveRound.id}`}><span>★</span><div><small>VOTING STATUS</small><strong>Vote now →</strong></div></Link>:<div className="voteComing"><span>★</span><div><small>VOTING STATUS</small><strong>Opening soon</strong></div></div>}
       </section>
     </div>
